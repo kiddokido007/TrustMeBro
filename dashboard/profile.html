@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | TrustMeBro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        :root {
+            --primary: #002D62;
+            --secondary: #001f3f;
+            --accent: #FF8C00;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --danger: #FF4757;
+            --success: #2ED573;
+            --warning: #FFA502;
+            --gradient: linear-gradient(135deg, #002D62 0%, #001f3f 100%);
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            background: var(--primary);
+            color: white;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            background: var(--gradient);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .verify-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: var(--success);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 3px solid white;
+        }
+
+        .profile-content {
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .edit-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status-banner {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .status-unverified {
+            background: #FFF3CD;
+            color: #856404;
+            border: 1px solid #FFEAA7;
+        }
+
+        .status-verified {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .status-pending {
+            background: #D1ECF1;
+            color: #0C5460;
+            border: 1px solid #BEE5EB;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-verify {
+            background: var(--success);
+            color: white;
+            margin-top: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-verify:hover {
+            background: #26b962;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        #saveBtn {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+            <h1 style="color: var(--primary); font-weight: 800;">Profile Settings</h1>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar-container" id="profileAvatar">
+                    <i class="fas fa-user"></i>
+                    <div class="verify-badge" id="headerVerifyBadge" style="display: none;">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileRoleBadge"
+                    style="opacity: 0.8; font-weight: 500; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                    Rider</p>
+            </div>
+
+            <div class="profile-content">
+                <!-- Verification Status -->
+                <div id="statusBanner" class="status-banner status-unverified">
+                    <div>
+                        <strong id="statusTitle">Account Unverified</strong>
+                        <p id="statusDesc" style="margin: 0.2rem 0 0; font-size: 0.85rem;">Complete your profile and
+                            verify your identity to start rides.</p>
+                    </div>
+                    <button class="btn btn-primary" id="verifyNowBtn" onclick="requestVerification()">Verify
+                        Now</button>
+                    <!-- Fast Track Button for Hack-A-Thon -->
+                    <button class="btn btn-verify" id="fastTrackBtn" style="display: none;"
+                        onclick="fastTrackVerify()">Verify Me Now (Dev Only)</button>
+                </div>
+
+                <div class="section-title">
+                    <i class="fas fa-user-circle"></i> Personal Information
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>First Name</label>
+                        <div class="value" id="val-firstName">-</div>
+                        <input type="text" id="input-firstName" class="edit-input">
+                    </div>
+                    <div class="info-item">
+                        <label>Last Name</label>
+                        <div class="value" id="val-lastName">-</div>
+                        <input type="text" id="input-lastName" class="edit-input">
+                    </div>
+                    <div class="info-item">
+                        <label>Email</label>
+                        <div class="value" id="val-email">-</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone Number</label>
+                        <div class="value" id="val-phone">-</div>
+                        <input type="text" id="input-phone" class="edit-input">
+                    </div>
+                </div>
+
+                <div id="driverSpecificFields" style="display: none;">
+                    <div class="section-title">
+                        <i class="fas fa-car"></i> Vehicle Details
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Vehicle Model</label>
+                            <div class="value" id="val-vehicleModel">-</div>
+                            <input type="text" id="input-vehicleModel" class="edit-input">
+                        </div>
+                        <div class="info-item">
+                            <label>License Plate</label>
+                            <div class="value" id="val-licensePlate">-</div>
+                            <input type="text" id="input-licensePlate" class="edit-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-group">
+                    <button class="btn btn-outline" id="editBtn" onclick="toggleEdit(true)">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button class="btn btn-primary" id="saveBtn" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button class="btn btn-outline" id="cancelBtn" style="display: none;" onclick="toggleEdit(false)">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/profile-manager.js"></script>
+    <script>
+        function goBack() {
+            const role = localStorage.getItem('userRole') || 'rider';
+            window.location.href = `./${role}-dashboard-v2.html`;
+        }
+    </script>
+</body>
+
+</html>

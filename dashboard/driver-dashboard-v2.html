@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard | TrustMeBro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/driver-dashboard.css">
+    <style>
+        /* Hide Leaflet Routing Machine instruction panel */
+        .leaflet-routing-container {
+            display: none !important;
+        }
+
+        .leaflet-overlay-pane svg {
+            z-index: 400 !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="greeting">Hey <span>Driver</span> 🚗</div>
+            </div>
+            <div class="header-right">
+                <!-- Verification Badge -->
+                <div class="verification-badge-container"></div>
+
+                <!-- Online/Offline Toggle -->
+                <div class="availability-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="availabilityToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="status-text">You're Offline</span>
+                </div>
+
+                <button class="profile-btn" id="profileBtn">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Earnings Dashboard -->
+        <div class="earnings-dashboard">
+            <div class="earnings-card">
+                <div class="earnings-label">Today</div>
+                <div class="earnings-value" id="dailyEarnings">$0.00</div>
+            </div>
+            <div class="earnings-card">
+                <div class="earnings-label">This Week</div>
+                <div class="earnings-value" id="weeklyEarnings">$0.00</div>
+            </div>
+            <div class="earnings-card">
+                <div class="earnings-label">This Month</div>
+                <div class="earnings-value" id="monthlyEarnings">$0.00</div>
+            </div>
+            <div class="earnings-card">
+                <div class="earnings-label">Total</div>
+                <div class="earnings-value" id="totalEarnings">$0.00</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Map Container -->
+            <div id="map"></div>
+
+            <!-- Ride Requests Panel -->
+            <div class="ride-requests-panel" id="rideRequestsPanel">
+                <h3><i class="fas fa-bell"></i> Incoming Ride Requests</h3>
+                <div id="rideRequestsContainer">
+                    <!-- Ride requests will be populated here -->
+                </div>
+            </div>
+
+            <!-- Trip Control Panel -->
+            <div class="trip-control-panel" id="tripControlPanel" style="display: none;">
+                <div class="trip-header">
+                    <h3>Active Trip</h3>
+                    <span class="trip-status" id="tripStatus">Assigned</span>
+                </div>
+
+                <div class="trip-details" id="tripDetails">
+                    <!-- Trip details will be populated here -->
+                </div>
+
+                <!-- Entry OTP Section -->
+                <div class="otp-section" id="entryOTPSection">
+                    <label>Enter Rider's Entry OTP:</label>
+                    <input type="text" id="entryOTPInput" maxlength="6" placeholder="000000" class="otp-input">
+                    <button id="verifyEntryOTPBtn" class="verify-btn">
+                        <i class="fas fa-check"></i> Start Trip
+                    </button>
+                    <div class="otp-error" id="entryOTPError"></div>
+                </div>
+
+                <!-- Trip Progress Section -->
+                <div class="trip-progress-section" id="tripProgressSection" style="display: none;">
+                    <div class="progress-info">
+                        <div><i class="fas fa-route"></i> Distance: <span id="distanceRemaining">0 km</span></div>
+                        <div><i class="fas fa-clock"></i> ETA: <span id="etaRemaining">-- mins</span></div>
+                    </div>
+                </div>
+
+                <!-- Exit OTP Section -->
+                <div class="otp-section" id="exitOTPSection" style="display: none;">
+                    <label>Enter Rider's Exit OTP:</label>
+                    <input type="text" id="exitOTPInput" maxlength="6" placeholder="000000" class="otp-input">
+                    <button id="verifyExitOTPBtn" class="verify-btn">
+                        <i class="fas fa-flag-checkered"></i> Complete Trip
+                    </button>
+                    <div class="otp-error" id="exitOTPError"></div>
+                </div>
+            </div>
+
+            <!-- SOS Button -->
+            <button class="sos-button" id="sosButton" title="Emergency SOS">
+                <i class="fas fa-exclamation-triangle"></i>
+            </button>
+        </div>
+
+        <!-- Profile Panel -->
+        <div class="profile-panel" id="profilePanel">
+            <div class="driver-profile">
+                <div class="driver-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 class="driver-name">Driver Name</h3>
+                <p class="driver-email">driver@example.com</p>
+                <div class="vehicle-info"></div>
+            </div>
+            <button class="profile-link-btn" onclick="window.location.href='./profile.html'" style="
+                width: 100%;
+                padding: 0.8rem;
+                background: #f1f5f9;
+                color: var(--primary);
+                border: none;
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            ">
+                <i class="fas fa-id-card"></i> View Profile & Verification
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { DriverDashboard } from "../scripts/driver-dashboard.js";
+        import { AvailabilityManager } from "../scripts/availability-manager.js";
+        import { RideRequestManager } from "../scripts/ride-request-manager.js";
+        import { DriverTripManager } from "../scripts/driver-trip-manager.js";
+        import { LocationBroadcaster } from "../scripts/location-broadcaster.js";
+
+        import { firebaseConfig } from "../scripts/firebase-config.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Global variables
+        let dashboard, availability, rideRequests, tripManager, locationBroadcaster;
+        let map, currentLocationMarker, routeControl;
+
+        // Initialize dashboard
+        async function initializeDashboard() {
+            try {
+                // Initialize core dashboard
+                dashboard = new DriverDashboard(app);
+                await dashboard.init();
+
+                const userId = dashboard.getCurrentUser().uid;
+                const driverData = dashboard.getDriverData();
+
+                // Initialize location broadcaster
+                locationBroadcaster = new LocationBroadcaster(app, userId);
+
+                // Initialize availability manager
+                availability = new AvailabilityManager(app, userId, dashboard, locationBroadcaster);
+                availability.init();
+
+                // Initialize ride request manager
+                rideRequests = new RideRequestManager(app, userId, dashboard);
+                rideRequests.init();
+
+                // Initialize trip manager
+                tripManager = new DriverTripManager(app, userId);
+
+                // Initialize map
+                initializeMap();
+
+                // Setup trip controls
+                setupTripControls();
+
+                // Setup SOS button
+                setupSOSButton();
+
+                console.log('✅ Driver dashboard initialized successfully');
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+            }
+        }
+
+        // Initialize map
+        function initializeMap() {
+            map = L.map('map').setView([20.5937, 78.9629], 5);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Get driver's current location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        map.setView([lat, lng], 15);
+
+                        currentLocationMarker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'current-location-marker',
+                                html: '<div style="background: #FF8C00; width: 20px; height: 20px; border-radius: 50%; border: 3px solid #002D62; box-shadow: 0 0 10px #FF8C00;"></div>',
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            })
+                        }).addTo(map).bindPopup('Your Location');
+                    },
+                    (error) => {
+                        console.error('Error getting location:', error);
+                        map.setView([13.0827, 80.2750], 12);
+                    },
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+                );
+            }
+        }
+
+        // Setup trip controls
+        function setupTripControls() {
+            // Entry OTP verification
+            const verifyEntryBtn = document.getElementById('verifyEntryOTPBtn');
+            if (verifyEntryBtn) {
+                verifyEntryBtn.addEventListener('click', async () => {
+                    const otpInput = document.getElementById('entryOTPInput').value.trim();
+                    const errorDiv = document.getElementById('entryOTPError');
+
+                    if (otpInput.length !== 6) {
+                        errorDiv.textContent = 'Please enter 6-digit OTP';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+
+                    try {
+                        const result = await tripManager.verifyEntryOTP(otpInput);
+
+                        if (result.success) {
+                            // Hide entry OTP section
+                            document.getElementById('entryOTPSection').style.display = 'none';
+                            // Show trip progress
+                            document.getElementById('tripProgressSection').style.display = 'block';
+                            // Show exit OTP section
+                            document.getElementById('exitOTPSection').style.display = 'block';
+                            // Update status
+                            document.getElementById('tripStatus').textContent = 'In Progress';
+                            // Start location tracking
+                            locationBroadcaster.startTracking();
+
+                            errorDiv.style.display = 'none';
+                            alert(result.message);
+                        } else {
+                            errorDiv.textContent = result.message;
+                            errorDiv.style.display = 'block';
+                        }
+                    } catch (error) {
+                        errorDiv.textContent = 'Error verifying OTP. Please try again.';
+                        errorDiv.style.display = 'block';
+                    }
+                });
+            }
+
+            // Exit OTP verification
+            const verifyExitBtn = document.getElementById('verifyExitOTPBtn');
+            if (verifyExitBtn) {
+                verifyExitBtn.addEventListener('click', async () => {
+                    const otpInput = document.getElementById('exitOTPInput').value.trim();
+                    const errorDiv = document.getElementById('exitOTPError');
+
+                    if (otpInput.length !== 6) {
+                        errorDiv.textContent = 'Please enter 6-digit OTP';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+
+                    try {
+                        const result = await tripManager.verifyExitOTP(otpInput);
+
+                        if (result.success) {
+                            // Stop location tracking
+                            locationBroadcaster.stopTracking();
+                            // Hide trip control panel
+                            document.getElementById('tripControlPanel').style.display = 'none';
+                            // Show ride requests panel
+                            document.getElementById('rideRequestsPanel').style.display = 'block';
+
+                            alert(result.message + ' Please rate the rider.');
+                            // TODO: Show rating modal
+                        } else {
+                            errorDiv.textContent = result.message;
+                            errorDiv.style.display = 'block';
+                        }
+                    } catch (error) {
+                        errorDiv.textContent = 'Error verifying OTP. Please try again.';
+                        errorDiv.style.display = 'block';
+                    }
+                });
+            }
+        }
+
+        // Setup SOS button
+        function setupSOSButton() {
+            const sosButton = document.getElementById('sosButton');
+            if (sosButton) {
+                sosButton.addEventListener('click', () => {
+                    if (confirm('⚠️ Trigger Emergency SOS? This will alert admin and emergency contacts.')) {
+                        // TODO: Implement SOS functionality
+                        alert('🚨 SOS Alert Sent! Help is on the way.');
+                    }
+                });
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,478 @@
+/* Live Trip Page Styles */
+
+:root {
+    --status-searching: #64748B;
+    --status-on-way: #F59E0B;
+    --status-arrived: #10B981;
+    --status-in-trip: #3B82F6;
+    --status-ending: #8B5CF6;
+    --sos-red: #EF4444;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+/* 1️⃣ Trip Status Banner */
+.status-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.status-searching {
+    background-color: var(--status-searching);
+}
+
+.status-on-way {
+    background-color: var(--status-on-way);
+}
+
+.status-arrived {
+    background-color: var(--status-arrived);
+}
+
+.status-in-trip {
+    background-color: var(--status-in-trip);
+}
+
+.status-completed {
+    background-color: var(--status-ending);
+}
+
+.status-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.eta-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* 2️⃣ Live Route Map */
+#live-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* 8️⃣ SOS Emergency Button */
+.sos-button {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--sos-red);
+    color: white;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.5);
+    z-index: 900;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.8rem;
+    animation: pulse 2s infinite;
+}
+
+.sos-button i {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* 7️⃣ Night Safety Badge */
+.safety-badge {
+    position: fixed;
+    top: 160px;
+    right: 20px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 900;
+}
+
+/* Trip Info Panel (Bottom Sheet) */
+.trip-info-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 1.5rem;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.panel-handle {
+    width: 40px;
+    height: 5px;
+    background: #cbd5e1;
+    border-radius: 10px;
+    margin: -10px auto 20px;
+}
+
+/* Trip Header */
+.trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 1.5rem;
+}
+
+.details h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1e293b;
+}
+
+.details p {
+    margin: 2px 0;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fffbeb;
+    color: #b45309;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f5f9;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Route Info */
+.trip-route-info {
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 20px;
+}
+
+.route-point {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.address {
+    font-size: 0.9rem;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+}
+
+.dot.pickup {
+    background: #3b82f6;
+    top: 5px;
+}
+
+.dot.drop {
+    background: #f59e0b;
+    bottom: 5px;
+}
+
+.route-line {
+    position: absolute;
+    left: 4px;
+    top: 15px;
+    bottom: 25px;
+    width: 2px;
+    background: #cbd5e1;
+    border-left: 2px dashed #cbd5e1;
+}
+
+/* OTP Section */
+.otp-section {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.otp-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.otp-code {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 8px;
+    color: #1e293b;
+    font-family: monospace;
+}
+
+/* OTP Inputs */
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.otp-digit {
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.otp-digit:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: flex-end;
+    /* Bottom sheet on mobile */
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 2rem;
+    animation: slideUp 0.3s ease;
+}
+
+.danger-modal .modal-content {
+    background: #fef2f2;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.sos-icon-large {
+    font-size: 3rem;
+    color: var(--sos-red);
+    margin-bottom: 1rem;
+}
+
+.pulse-animation {
+    animation: pulse 1s infinite;
+}
+
+.center-text {
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .trip-info-panel {
+        width: 400px;
+        left: 20px;
+        bottom: 20px;
+        border-radius: 24px;
+    }
+
+    .modal {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 400px;
+        border-radius: 20px;
+    }
+}
+
+/* Payment UI */
+.payment-methods {
+    display: flex;
+    gap: 10px;
+    margin: 1.5rem 0;
+}
+
+.payment-option {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-option input {
+    display: none;
+}
+
+.payment-option.selected {
+    border-color: var(--accent);
+    background: #f0fdf4;
+    /* Light green tint */
+    color: var(--accent);
+}
+
+.amount-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1e293b;
+}
+
+.success-checkmark {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+.success-checkmark i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}

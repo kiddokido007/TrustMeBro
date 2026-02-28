@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustMeBro | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--bg-alt);
+            border-radius: var(--border-radius-md);
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .dashboard-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .dashboard-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-dashboard {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-dashboard:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo-container">
+                <img src="../assets/logo.png" alt="TrustMeBro Logo">
+            </div>
+            <h1>TrustMeBro</h1>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="#" class="nav-link">Dashboard</a>
+            <a href="#" class="nav-link">Profile</a>
+            <a href="#" class="nav-link">Safety</a>
+            <a href="#" class="nav-link">Settings</a>
+            <div class="trust-badge">
+                <i class="fas fa-shield-check"></i>
+                Verified User
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="welcome-section">
+            <h1>Welcome to TrustMeBro!</h1>
+            <p id="userRole">Your safety matters to us</p>
+        </section>
+
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <i class="fas fa-car"></i>
+                <h3>Book a Ride</h3>
+                <p>Schedule a safe and verified ride with our trusted drivers</p>
+                <a href="#" class="btn-dashboard">Book Now</a>
+            </div>
+            
+            <div class="dashboard-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Safety Center</h3>
+                <p>Access all your safety features and trip history</p>
+                <a href="#" class="btn-dashboard">View Safety</a>
+            </div>
+            
+            <div class="dashboard-card">
+                <i class="fas fa-history"></i>
+                <h3>Trip History</h3>
+                <p>Review your past trips and driver ratings</p>
+                <a href="#" class="btn-dashboard">View History</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get URL parameter to determine role
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role') || 'rider';
+        
+        // Update UI based on role
+        document.getElementById('userRole').textContent = `You are logged in as a ${role}`;
+        
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+            this.innerHTML = document.getElementById('navLinks').classList.contains('active')
+                ? '<i class="fas fa-times"></i>'
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+                document.getElementById('mobileMenuBtn').innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+    </script>
+</body>
+</html>
