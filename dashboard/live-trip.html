@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Trip | TrustMeBro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/live-trip.css">
+</head>
+
+<body>
+    <!-- 1️⃣ Trip Status Banner (Top Priority) -->
+    <div id="trip-status-banner" class="status-banner status-searching">
+        <div class="status-content">
+            <i class="fas fa-search" id="status-icon"></i>
+            <span id="status-text">Connecting to server...</span>
+        </div>
+        <div id="eta-badge" class="eta-badge" style="display: none;">
+            <i class="fas fa-clock"></i> <span id="eta-text">-- mins</span>
+        </div>
+    </div>
+
+    <!-- 2️⃣ Live Route Map (Real-Time) -->
+    <div id="live-map"></div>
+
+    <!-- 8️⃣ SOS Emergency Button (Always Visible) -->
+    <button id="sos-button" class="sos-button">
+        <i class="fas fa-bell"></i>
+        <span>SOS</span>
+    </button>
+
+    <!-- 7️⃣ Night Safety Monitoring (Floating Badge) -->
+    <div id="night-safety-badge" class="safety-badge" style="display: none;">
+        <i class="fas fa-moon"></i> Night Safety Active
+    </div>
+
+    <!-- Trip Info Panel (Bottom Sheet) -->
+    <div class="trip-info-panel">
+        <div class="panel-handle"></div>
+
+        <!-- 3️⃣ Driver/Rider Info -->
+        <div class="trip-header">
+            <div class="user-info">
+                <div class="avatar" id="other-user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="details">
+                    <h3 id="other-user-name">Loading...</h3>
+                    <p id="vehicle-info">Vehicle Info • License Plate</p>
+                    <div class="rating-badge">
+                        <i class="fas fa-star"></i> <span id="other-user-rating">--</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 10️⃣ Limited Communication Controls -->
+            <div class="action-buttons">
+                <button class="icon-btn" id="call-btn"><i class="fas fa-phone"></i></button>
+                <button class="icon-btn" id="chat-btn"><i class="fas fa-comment"></i></button>
+            </div>
+        </div>
+
+        <div class="trip-route-info">
+            <div class="route-point">
+                <div class="dot pickup"></div>
+                <div class="address" id="pickup-address">Pickup Point</div>
+            </div>
+            <div class="route-line"></div>
+            <div class="route-point">
+                <div class="dot drop"></div>
+                <div class="address" id="drop-address">Drop Point</div>
+            </div>
+        </div>
+
+        <!-- 4️⃣ & 11️⃣ OTP Sections -->
+        <div id="otp-section" class="otp-section">
+            <!-- Dynamic Content based on Role & State -->
+            <div class="otp-container" id="otp-display-container">
+                <p class="otp-label">Share this OTP to Start Trip</p>
+                <div class="otp-code" id="otp-display">------</div>
+            </div>
+
+            <div class="otp-input-container" id="otp-input-container" style="display: none;">
+                <p class="otp-label">Enter Rider's OTP to Start</p>
+                <div class="otp-inputs">
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                    <input type="tel" maxlength="1" class="otp-digit" />
+                </div>
+                <button id="verify-otp-btn" class="primary-btn">Verify & Start Trip</button>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div id="trip-actions" class="trip-actions">
+            <!-- Dynamic buttons (Cancel, End Trip) -->
+        </div>
+    </div>
+
+    <!-- 9️⃣ In-Trip Notifications (Toast) -->
+    <div id="notification-container"></div>
+
+    <!-- 12️⃣ Trip Summary Snapshot (Modal) -->
+    <div id="trip-summary-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Trip Summary</h2>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="summary-details">
+                <div class="summary-item">
+                    <span>Distance</span>
+                    <strong id="summary-distance">0.0 km</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Duration</span>
+                    <strong id="summary-duration">0 mins</strong>
+                </div>
+                <div class="summary-item total">
+                    <span>Total Fare</span>
+                    <strong id="summary-fare">$0.00</strong>
+                </div>
+            </div>
+            <!-- 13️⃣ Feedback Trigger -->
+            <!-- Payment Section -->
+            <div id="payment-section" class="payment-section">
+                <h3>Select Payment Method</h3>
+                <div class="payment-methods">
+                    <label class="payment-option selected">
+                        <input type="radio" name="paymentMethod" value="UPI" checked>
+                        <i class="fas fa-mobile-alt"></i> UPI
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="CASH">
+                        <i class="fas fa-money-bill-wave"></i> Cash
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="WALLET">
+                        <i class="fas fa-wallet"></i> Wallet
+                    </label>
+                </div>
+                <div class="amount-display">
+                    Pay <span id="payment-amount">$0.00</span>
+                </div>
+                <button id="process-payment-btn" class="primary-btn">Pay Now</button>
+            </div>
+
+            <!-- 13️⃣ Feedback Trigger (Hidden initially) -->
+            <div class="feedback-section" id="feedback-section" style="display: none;">
+                <div class="success-checkmark">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Payment Successful!</p>
+                </div>
+                <h3>Rate your experience</h3>
+                <div class="star-rating" id="star-rating">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <textarea placeholder="Any comments? (Optional)" id="feedback-text"></textarea>
+                <button id="submit-feedback-btn" class="primary-btn">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOS Confirmation / Active Modal -->
+    <div id="sos-modal" class="modal danger-modal">
+        <div class="modal-content center-text">
+            <div class="sos-icon-large pulse-animation">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h2>SOS ALERT TRIGGERED</h2>
+            <p>Admin and Emergency Contacts have been notified. Live audio/video recording started.</p>
+            <p class="timer">Help arriving in <span id="emergency-timer">05:00</span></p>
+            <button id="cancel-sos-btn" class="secondary-btn">False Alarm (Cancel)</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script type="module" src="../scripts/live-trip.js"></script>
+</body>
+
+</html>

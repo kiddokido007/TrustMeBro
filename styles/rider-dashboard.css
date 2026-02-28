@@ -1,0 +1,579 @@
+/* Rider Dashboard Specific Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f4f8;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}
+
+/* Header Section */
+.dashboard-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 5%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-container {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.greeting {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.greeting span {
+    color: var(--accent);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notification-btn, .profile-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f0f4f8;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    color: var(--primary);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.notification-btn:hover, .profile-btn:hover {
+    background: #e2e8f0;
+    transform: scale(1.05);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Safety Status */
+.safety-status {
+    background: white;
+    padding: 0.8rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.safety-status i {
+    font-size: 1.2rem;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+/* Map Container */
+#map {
+    flex: 1;
+    z-index: 1;
+}
+
+/* Ride Control Panel */
+.ride-control-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.location-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.location-input {
+    position: relative;
+}
+
+.location-input i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.location-input input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.location-input input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.fare-estimate {
+    background: #f8fafc;
+    padding: 0.8rem;
+    border-radius: 12px;
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.book-ride-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.book-ride-btn:hover:not(:disabled) {
+    background: #e67a00;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+.book-ride-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Ride States */
+.ride-state {
+    display: none;
+}
+
+.ride-state.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.searching-driver {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.searching-driver .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.driver-assigned {
+    text-align: center;
+}
+
+.driver-info {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+.driver-info h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.driver-info p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.otp-display {
+    background: #fff3cd;
+    border: 2px solid #ffeaa7;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.otp-display p {
+    font-size: 0.9rem;
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.otp-code {
+    font-family: 'Courier New', monospace;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: var(--primary);
+    margin: 0.5rem 0;
+    user-select: all;
+}
+
+/* SOS Button */
+.sos-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    transition: transform 0.2s ease;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+}
+
+.sos-button:hover {
+    transform: scale(1.1);
+}
+
+.sos-button:active {
+    transform: scale(0.95);
+}
+
+/* Notification panel */
+.notifications-panel {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 350px;
+    max-width: 90vw;
+    max-height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1001;
+    display: none;
+    overflow-y: auto;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notifications-panel.active {
+    display: block;
+}
+
+.notification-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item.unread {
+    background: #f8fafc;
+}
+
+.notification-item:hover {
+    background: #f1f5f9;
+}
+
+/* Profile panel */
+.profile-panel {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 250px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1001;
+    display: none;
+    padding: 1.5rem;
+    animation: slideDown 0.3s ease;
+}
+
+.profile-panel.active {
+    display: block;
+}
+
+.user-profile {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.user-profile h3 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.user-profile p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #e63946;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 0.8rem 3%;
+    }
+
+    .greeting {
+        font-size: 0.95rem;
+    }
+
+    .ride-control-panel {
+        width: 95%;
+        bottom: 80px;
+        padding: 1.2rem;
+    }
+    
+    .sos-button {
+        bottom: 10px;
+        right: 10px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .notifications-panel,
+    .profile-panel {
+        right: 10px;
+        max-width: calc(100vw - 20px);
+    }
+
+    .location-input input {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.8rem 0.7rem 38px;
+    }
+
+    .otp-code {
+        font-size: 1.6rem;
+        letter-spacing: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-left {
+        gap: 10px;
+    }
+
+    .logo-container {
+        width: 35px;
+        height: 35px;
+    }
+
+    .greeting {
+        font-size: 0.85rem;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .notification-btn, .profile-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .ride-control-panel {
+        bottom: 70px;
+        padding: 1rem;
+    }
+
+    .sos-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Custom scrollbar for notifications panel */
+.notifications-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notifications-panel::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.notifications-panel::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.notifications-panel::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

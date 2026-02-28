@@ -1,0 +1,524 @@
+/* Driver Dashboard Specific Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f4f8;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}
+
+/* Header */
+.dashboard-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-container {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.greeting {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.greeting span {
+    color: var(--accent);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Availability Toggle */
+.availability-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #2ED573;
+}
+
+input:checked+.slider:before {
+    transform: translateX(24px);
+}
+
+.status-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #64748B;
+}
+
+.profile-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f0f4f8;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--primary);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+    background: #e2e8f0;
+    transform: scale(1.05);
+}
+
+/* Earnings Dashboard */
+.earnings-dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem 5%;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.earnings-card {
+    text-align: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 12px;
+}
+
+.earnings-label {
+    font-size: 0.85rem;
+    color: #64748B;
+    margin-bottom: 0.5rem;
+}
+
+.earnings-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+#map {
+    flex: 1;
+    z-index: 1;
+}
+
+/* Ride Requests Panel */
+.ride-requests-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 400px;
+    max-height: calc(100vh - 300px);
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.ride-requests-panel h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#rideRequestsContainer {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Trip Control Panel */
+.trip-control-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.trip-header h3 {
+    color: var(--primary);
+}
+
+.trip-status {
+    padding: 0.4rem 1rem;
+    background: #E8F5E9;
+    color: #1B5E20;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.trip-details {
+    margin-bottom: 1rem;
+}
+
+/* OTP Section */
+.otp-section {
+    margin: 1.5rem 0;
+}
+
+.otp-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.otp-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 8px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.verify-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.verify-btn:hover {
+    background: #e67a00;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+.otp-error {
+    display: none;
+    color: #FF4757;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #FFEBEE;
+    border-radius: 8px;
+}
+
+/* Trip Progress */
+.trip-progress-section {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.95rem;
+    color: #64748B;
+}
+
+.progress-info div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.progress-info i {
+    color: var(--accent);
+}
+
+/* SOS Button */
+.sos-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    transition: transform 0.2s ease;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+    }
+}
+
+.sos-button:hover {
+    transform: scale(1.1);
+}
+
+/* Profile Panel */
+.profile-panel {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: none;
+    padding: 1.5rem;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-panel.active {
+    display: block;
+}
+
+.driver-profile {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.driver-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.8rem;
+    color: white;
+    font-size: 1.8rem;
+}
+
+.driver-name {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.driver-email {
+    color: #64748B;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.vehicle-info {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #e63946;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .earnings-dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ride-requests-panel {
+        width: calc(100% - 40px);
+        max-height: 300px;
+    }
+
+    .trip-control-panel {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .earnings-dashboard {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .earnings-card {
+        padding: 0.8rem;
+    }
+
+    .earnings-value {
+        font-size: 1.2rem;
+    }
+}
+
+/* Custom scrollbar */
+.ride-requests-panel::-webkit-scrollbar,
+#rideRequestsContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ride-requests-panel::-webkit-scrollbar-track,
+#rideRequestsContainer::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.ride-requests-panel::-webkit-scrollbar-thumb,
+#rideRequestsContainer::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.ride-requests-panel::-webkit-scrollbar-thumb:hover,
+#rideRequestsContainer::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
